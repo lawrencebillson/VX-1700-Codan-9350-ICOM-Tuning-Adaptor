@@ -1,0 +1,15 @@
+# VX-1700 ALC Voltages
+The sensible way to control the output power of the VX-1700 is to apply a negative voltage to the ALC pin on the 'accessory' socket.
+
+This will normally require an isolated DC/DC converter to generate the negative voltage line.
+
+# Test setup
+I used the following equipment:
+VX-1700 - set to 100W on 14Mhz
+RF power meter - (not calibrated, but reads 99-100 with no ALC bias pplied)
+Dry dummy load
+Bench power supply, set to apply negative voltage to the ALC line
+
+To generate the RF signal, I grounded the "TX REQ" pin on the ACC port. 
+
+# Test results
