@@ -15,16 +15,20 @@
 void setup() {
   Serial.begin(9600);
   pinMode(ICOMSTART, OUTPUT);
+  digitalWrite(ICOMSTART,HIGH);
+  
   pinMode(ICOMKEY, INPUT);
   pinMode(LED, OUTPUT);
  
 
   // Wait two seconds to allow the tuner to settle down
   delay(2000);
+  
+  // Blink the LED to show we're OK
   digitalWrite(LED, HIGH);
   delay(100);
   digitalWrite(LED, LOW);
-  Serial.println("Ready to go 1");
+  Serial.println("Ready to go");
 }
 
 // the loop function runs over and over again forever
@@ -32,11 +36,11 @@ void loop() {
   int tunereq;
   int icomkey; 
 
-  // Sensible defaults
-  digitalWrite(LED,LOW);
+  // Restore Sanity
   pinMode(CODANTUNE, INPUT);
   pinMode(CODANIND, INPUT);
-  
+  digitalWrite(LED,LOW);
+  digitalWrite(ICOMSTART,HIGH);
 
 
   // Wait until we get a tune signal from the radio
@@ -48,10 +52,10 @@ void loop() {
     pinMode(CODANIND, OUTPUT);
     digitalWrite(CODANTUNE, LOW);
     digitalWrite(CODANIND, LOW);
-    digitalWrite(ICOMSTART,HIGH);
     delay(10);
     digitalWrite(ICOMSTART,LOW);
-    delay(100);
+    delay(100);  // Needs a minimum of 50ms low to start the tune cycle
+    digitalWrite(ICOMSTART,HIGH);
 
     // Loop until the key value is low
     icomkey = 0;
