@@ -5,15 +5,14 @@
  */
 
 // Pin assignments
-#define ICOMSTART 5
-#define ICOMKEY 3
-#define CODANIND 6
-#define CODANTUNE 4
-#define LED 2
+#define ICOMSTART 3
+#define ICOMKEY 4
+#define CODANIND 2
+#define CODANTUNE 1
+#define LED 0
 
 // the setup function runs once when you press reset or power the board
 void setup() {
-  Serial.begin(9600);
   pinMode(ICOMSTART, OUTPUT);
   digitalWrite(ICOMSTART,HIGH);
   pinMode(ICOMKEY, INPUT_PULLUP);
@@ -25,9 +24,9 @@ void setup() {
   
   // Blink the LED to show we're OK
   digitalWrite(LED, HIGH);
-  delay(100);
+  delay(1000);
   digitalWrite(LED, LOW);
-  Serial.println("Ready to go");
+
 }
 
 // the loop function runs over and over again forever
@@ -45,7 +44,6 @@ void loop() {
   // Wait until we get a tune signal from the radio
   tunereq = digitalRead(CODANTUNE);
   if (!tunereq) {
-    Serial.println("Tuning cycle begin");
     // Start a tuning cycle
     pinMode(CODANTUNE, OUTPUT);
     pinMode(CODANIND, OUTPUT);
@@ -53,46 +51,47 @@ void loop() {
     digitalWrite(CODANIND, LOW);
     delay(10);
     digitalWrite(ICOMSTART,LOW);
-    delay(100);  // Needs a minimum of 50ms low to start the tune cycle
+    delay(50);  // Needs a minimum of 50ms low to start the tune cycle
     digitalWrite(ICOMSTART,HIGH);
-
+    delay(300);
     // Loop until the key value is low
     icomkey = 0;
-    Serial.print("icomkey value is");
-    Serial.println(icomkey);
 
     
     while (!icomkey) {
       delay(100);
       icomkey = digitalRead(ICOMKEY);
-
-      Serial.print("icomkey value is");
-      Serial.println(icomkey);
-
       
       // Debounce it
       if(icomkey) {
-          Serial.println("Debouncing");
-          delay(500);
+          delay(1000);
           icomkey = digitalRead(ICOMKEY);        
         }
     }
 
+  delay(500);
   sendpass();  
-  Serial.println("Debounced - sending a tune pass signal");
   delay(500);
   }
+  
 } // End of main loop
 
 void sendpass() {
+    digitalWrite(LED, HIGH);
     digitalWrite(CODANIND, HIGH);
     delay(50);
     digitalWrite(CODANTUNE, HIGH);
+    delay(500);
+    digitalWrite(LED, LOW);
+    
 }
 
 void sendpfail() {
     digitalWrite(CODANIND, HIGH);
+    digitalWrite(LED, HIGH);
     delay(50);
     digitalWrite(CODANTUNE, HIGH);
+    delay(5000);
+    digitalWrite(LED, LOW);
 }
 
