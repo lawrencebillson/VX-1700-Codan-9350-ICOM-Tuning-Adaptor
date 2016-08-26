@@ -16,8 +16,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(ICOMSTART, OUTPUT);
   digitalWrite(ICOMSTART,HIGH);
-  
-  pinMode(ICOMKEY, INPUT);
+  pinMode(ICOMKEY, INPUT_PULLUP);
   pinMode(LED, OUTPUT);
  
 
